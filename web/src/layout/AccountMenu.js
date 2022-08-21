@@ -87,11 +87,6 @@ export default function AccountMenu() {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-            <ListItemLink
-                primary='Seguridad'
-                to='/security'
-                icon={<LockIcon fontSize='small' />}
-            />
             <LogoutButton />
         </Menu>
         </React.Fragment>

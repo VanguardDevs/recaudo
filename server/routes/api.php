@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContribuyenteController;
+use App\Http\Controllers\PagoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +21,8 @@ use App\Http\Controllers\ContribuyenteController;
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('/taxpayers', ContribuyenteController::class);
+    Route::resource('/taxpayers', ContribuyenteController::class)
+        ->only('show', 'index');
+
+    Route::get('/payments', [PagoController::class, 'index']);
 });

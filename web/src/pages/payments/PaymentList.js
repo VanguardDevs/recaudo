@@ -23,32 +23,25 @@ const options = [
 ]
 
 const headCells = [
-    { 
-        id: 'address',
+    {
+        id: 'numpago',
         numeric: false,
         disablePadding: true,
-        label: 'Dirección',
+        label: 'Número',
     },
-    { 
+    {
         id: 'taxpayer',
         numeric: false,
         disablePadding: true,
         label: 'Contribuyente',
     },
-    { 
+    {
         id: 'item',
         numeric: false,
         disablePadding: true,
         label: 'Rubro',
     },
-    { 
-        id: 'status',
-        numeric: false,
-        disablePadding: true,
-        label: 'Estado',
-        align: 'right'
-    },
-    { 
+    {
         id: 'actions',
         numeric: false,
         disablePadding: true,
@@ -57,13 +50,13 @@ const headCells = [
     }
 ];
 
-const CubicleList = ({ initialValues, createButton, title = 'Padrón de cubículos' }) => {
+const PaymentList = ({ initialValues, createButton, title = 'Relación de pagos' }) => {
     const isSmall = useMediaQuery(theme =>
         theme.breakpoints.down('sm')
     )
     const [filter, setFilter] = React.useState(initialValues)
     const { state: { perPage, page } } = useAdmin()
-    const { loading, total, data } = useFetch('/cubicles', {
+    const { loading, total, data } = useFetch('/payments', {
         perPage: perPage,
         page: page,
         filter: filter
@@ -87,21 +80,6 @@ const CubicleList = ({ initialValues, createButton, title = 'Padrón de cubícul
         }
     }
 
-    const handleDelete = React.useCallback(async (values) => {
-        const { data } = await axios.delete(`/cubicles/${values.id}`);
-
-        if (data) {
-            setItems(prevItems => [
-                ...prevItems.filter(({ id }) => id != data.id),
-                data  
-            ])
-            enqueueSnackbar(
-                `¡Ha desincorporado el cubículo "${data.address}"`, 
-                { variant: 'success' }
-            );
-        }
-    }, [])
-
     const rowRender = () => (
         items.map(row => (
             <TableRow hover tabIndex={-1} key={row.address}>
@@ -110,9 +88,9 @@ const CubicleList = ({ initialValues, createButton, title = 'Padrón de cubícul
                     id={row.id}
                     scope="row"
                     padding="normal"
-                    width='40%'
+                    width='10%'
                 >
-                    {row.address}
+                    {row.numpago}
                 </TableCell>
                 <TableCell
                     component="th"
@@ -121,7 +99,7 @@ const CubicleList = ({ initialValues, createButton, title = 'Padrón de cubícul
                     padding="normal"
                     width='30%'
                 >
-                    {row.taxpayer.name}
+                    {row.contribuyente.razonsocialdenominacioncomercial}
                 </TableCell>
                 <TableCell
                     component="th"
@@ -131,34 +109,13 @@ const CubicleList = ({ initialValues, createButton, title = 'Padrón de cubícul
                     width='10%'
                     textAlign='center'
                 >
-                    {row.item.name}
-                </TableCell>
-                <TableCell
-                    component="th"
-                    id={row.id}
-                    scope="row"
-                    padding="normal"
-                    width='10%'
-                    sx={{
-                        textAlign: 'center'
-                    }}
-                >
-                    {row.active ? 'Activo' : 'Desincorporado'}
+                    {row.contribuyente.rif}
                 </TableCell>
                 <TableCell
                     scope="row"
                     align='right'
                     width='10%'
                 >
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <LinkIconButton href={`/cubicles/${row.id}/edit`} />
-                        {row.active ? (
-                            <DeleteButton
-                                title={`¿Está seguro que desea desincorporar el cubículo "${row.address}"?`}
-                                onClick={() => handleDelete(row)}
-                            />
-                        ) : null}
-                    </Box>
                 </TableCell>
             </TableRow>
         )))
@@ -188,7 +145,7 @@ const CubicleList = ({ initialValues, createButton, title = 'Padrón de cubícul
                             />
                         </Grid>
                         <Grid item sm={6}>
-                            <Autocomplete 
+                            <Autocomplete
                                 disablePortal
                                 options={options}
                                 fullWidth
@@ -209,19 +166,12 @@ const CubicleList = ({ initialValues, createButton, title = 'Padrón de cubícul
                         <PrintButton
                             perPage={10}
                             filter={filter}
-                            basePath='/cubicles'
-                            filename='cubiculos.pdf'
+                            basePath='/payments'
+                            filename='facturas.pdf'
                             type='pdf'
                             title={title}
                         />
                     ) : <></>}
-                    {(createButton) && (
-                        <ButtonLink
-                            color="primary"
-                            variant="contained"
-                            to={`/cubicles/${initialValues.taxpayer_id}/create`}
-                        />
-                    )}
                 </Box>
             </Box>
             <Table
@@ -234,10 +184,10 @@ const CubicleList = ({ initialValues, createButton, title = 'Padrón de cubícul
     )
 }
 
-CubicleList.defaultProps = {
+PaymentList.defaultProps = {
     initialValues: {},
     createButton: false,
     showTaxpayer: false
 }
 
-export default CubicleList
+export default PaymentList

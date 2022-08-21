@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contribuyente;
+use App\Models\Pago;
 use Illuminate\Http\Request;
 
-class ContribuyenteController extends Controller
+class PagoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class ContribuyenteController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Contribuyente::orderBy('id', 'desc');
+        $query = Pago::with('contribuyente')->orderBy('id', 'desc');
         $results = $request->perPage;
         $sort = $request->sort;
         $order = $request->order;
@@ -37,8 +37,8 @@ class ContribuyenteController extends Controller
             if (array_key_exists('address', $filters)) {
                 $query->whereLike('address', $filters['address']);
             }
-            if (array_key_exists('id', $filters)) {
-                $query->find($filters['id']);
+            if (array_key_exists('contribuyente_id', $filters)) {
+                $query->whereContribuyenteId($filters['contribuyente_id']);
             }
         }
 
@@ -51,16 +51,5 @@ class ContribuyenteController extends Controller
         }
 
         return $query->paginate($results);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Contribuyente  $contribuyente
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return Contribuyente::find($id);
     }
 }

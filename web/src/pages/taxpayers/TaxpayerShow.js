@@ -2,13 +2,11 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import { useParams } from 'react-router-dom'
 import axios from '../../api'
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import TextField from '../../components/TextField';
-import EmailIcon from '@mui/icons-material/Email';
 import LinkIconButton from '../../components/LinkIconButton';
 import LoadingIndicator from '../../components/LoadingIndicator'
 import { setTitle, useAdmin } from '../../context/AdminContext'
-import CubicleList from '../cubicles/CubicleList';
+import PaymentList from '../payments/PaymentList';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const TaxpayerShow = () => {
@@ -49,7 +47,7 @@ const TaxpayerShow = () => {
                     flex: '1'
                 }}>
                     <Box fontSize='1.1rem' fontWeight='600'>
-                        {record.name}
+                        {record.razonsocialdenominacioncomercial}
                     </Box>
                     <Box fontWeight='300' fontSize='0.9rem'>
                         {record.rif}
@@ -61,30 +59,18 @@ const TaxpayerShow = () => {
                         }
                     }}>
                         <TextField
-                            source={record.fiscal_address}
+                            source={record.direccion}
                             icon={<LocationOnIcon />}
                         />
-                        {record.phone && (
-                            <TextField
-                                source={record.phone}
-                                icon={<LocalPhoneIcon />}
-                            />
-                        )}
-                        {record.email && (
-                            <TextField
-                                source={record.email}
-                                icon={<EmailIcon />}
-                            />
-                        )}
                     </Box>
                 </Box>
                 <Box alignSelf='start'>
                     <LinkIconButton href={`/taxpayers/${record.id}/edit`} />
                 </Box>
             </Box>
-            <CubicleList initialValues={{
-                taxpayer_id: id
-            }} createButton title={`Cubículos del contribuyente "${record.name}"`} />
+            <PaymentList initialValues={{
+                contribuyente_id: id
+            }} title={`Pagos del contribuyente "${record.name}"`} />
         </Box>
     )
 }

@@ -9,52 +9,24 @@ import List from '@mui/material/List';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import {
-    routes,
-    adminRoutes,
-    geographicArea,
-    settings,
-    reports,
-    rates
-} from './drawerRoutes'
+import { routes } from './drawerRoutes'
 import ListItemLink from '../components/ListItemLink';
-import Submenu from '../components/Submenu';
 import { useAdmin } from '../context/AdminContext'
 import AccountMenu from './AccountMenu'
 import LogoutButton from '../components/LogoutButton';
-import PeopleIcon from '@mui/icons-material/People';
 import GoBackButton from './GoBackButton'
-import PrivateRoute from '../components/PrivateRoute';
 import { useNavigate } from 'react-router-dom'
 import { alpha } from '@mui/material';
-// Icons
-import ArticleIcon from '@mui/icons-material/Article';
-import PublicIcon from '@mui/icons-material/Public';
-import BuildIcon from '@mui/icons-material/Build';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import CalculateIcon from '@mui/icons-material/Calculate';
 
 const drawerWidth = 240;
 
 function ResponsiveDrawer() {
-    const [state, setState] = React.useState({
-        administration: false,
-        areas: false,
-        rates: false,
-        reports: false,
-        rates: false,
-        settings: false
-    });
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const { state: AdminState } = useAdmin()
     const navigate = useNavigate();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
-    };
-
-    const handleToggle = menu => {
-        setState(state => ({ ...state, [menu]: !state[menu] }));
     };
 
     const drawer = (
@@ -84,101 +56,6 @@ function ResponsiveDrawer() {
                         key={index}
                     />
                 ))}
-                <PrivateRoute authorize='admin' unauthorized={null}>
-                    <Submenu
-                        handleToggle={() => handleToggle('rates')}
-                        isOpen={state.rates}
-                        sidebarIsOpen={true}
-                        name='Tasas'
-                        icon={<CalculateIcon />}
-                    >
-                        {rates.map((route, index) => (
-                            <ListItemLink
-                                primary={route.name}
-                                to={route.route}
-                                icon={route.icon}
-                                key={index}
-                            />
-                        ))}
-                    </Submenu>
-                </PrivateRoute>
-                <PrivateRoute authorize='admin' unauthorized={null}>
-                    <Submenu
-                        handleToggle={() => handleToggle('reports')}
-                        isOpen={state.reports}
-                        sidebarIsOpen={true}
-                        name='Reportes'
-                        icon={<AssessmentIcon />}
-                    >
-                        {reports.map((route, index) => (
-                            <ListItemLink
-                                primary={route.name}
-                                to={route.route}
-                                icon={route.icon}
-                                key={index}
-                            />
-                        ))}
-                    </Submenu>
-                </PrivateRoute>
-                <PrivateRoute authorize='admin' unauthorized={null}>
-                    <Submenu
-                        handleToggle={() => handleToggle('areas')}
-                        isOpen={state.areas}
-                        sidebarIsOpen={true}
-                        name='Áreas'
-                        icon={<PublicIcon />}
-                    >
-                        {geographicArea.map((route, index) => (
-                            <ListItemLink
-                                primary={route.name}
-                                to={route.route}
-                                icon={route.icon}
-                                key={index}
-                            />
-                        ))}
-                    </Submenu>
-                </PrivateRoute>
-                <PrivateRoute authorize='admin' unauthorized={null}>
-                    <Submenu
-                        handleToggle={() => handleToggle('settings')}
-                        isOpen={state.settings}
-                        sidebarIsOpen={true}
-                        name='Configuraciones'
-                        icon={<BuildIcon />}
-                    >
-                        {settings.map((route, index) => (
-                            <ListItemLink
-                                primary={route.name}
-                                to={route.route}
-                                icon={route.icon}
-                                key={index}
-                            />
-                        ))}
-                    </Submenu>
-                </PrivateRoute>
-                <PrivateRoute authorize='admin' unauthorized={null}>
-                    <Submenu
-                        handleToggle={() => handleToggle('administration')}
-                        isOpen={state.administration}
-                        sidebarIsOpen={true}
-                        name='Administración'
-                        icon={<PeopleIcon />}
-                    >
-                        {adminRoutes.map((route, index) => (
-                            <ListItemLink
-                                primary={route.name}
-                                to={route.route}
-                                icon={route.icon}
-                                key={index}
-                            />
-                        ))}
-                    </Submenu>
-                </PrivateRoute>
-                <ListItemLink
-                    primary='Manual'
-                    to='/docs'
-                    icon={<ArticleIcon />}
-                />
                 <Divider />
                 <LogoutButton />
             </List>
