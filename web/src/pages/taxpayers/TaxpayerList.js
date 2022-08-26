@@ -58,7 +58,7 @@ const TaxpayerList = () => {
     const handleOnChange = (e) => {
         if (e.currentTarget.value) {
             setFilter({
-                name: e.currentTarget.value
+                global: e.currentTarget.value
             })
         } else {
             setFilter({})
