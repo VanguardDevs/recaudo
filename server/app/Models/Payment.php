@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pago extends Model
+class Payment extends Model
 {
     use HasFactory;
 
     protected $table = 'pago';
 
-    public function contribuyente()
+    public function taxpayer()
     {
-        return $this->belongsTo(Contribuyente::class, 'contribuyente_id');
+        return $this->belongsTo(Taxpayer::class, 'contribuyente_id', 'id');
     }
 }

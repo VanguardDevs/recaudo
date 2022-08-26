@@ -99,7 +99,7 @@ const PaymentList = ({ initialValues, createButton, title = 'Relación de pagos'
                     padding="normal"
                     width='30%'
                 >
-                    {row.contribuyente.razonsocialdenominacioncomercial}
+                    {row.taxpayer.razonsocialdenominacioncomercial}
                 </TableCell>
                 <TableCell
                     component="th"
@@ -109,7 +109,7 @@ const PaymentList = ({ initialValues, createButton, title = 'Relación de pagos'
                     width='10%'
                     textAlign='center'
                 >
-                    {row.contribuyente.rif}
+                    {row.taxpayer.rif}
                 </TableCell>
                 <TableCell
                     scope="row"

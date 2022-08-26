@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pago;
+use App\Models\Taxpayer;
 use Illuminate\Http\Request;
 
-class PagoController extends Controller
+class TaxpayerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class PagoController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Pago::with('contribuyente')->orderBy('id', 'desc');
+        $query = Taxpayer::orderBy('id', 'desc');
         $results = $request->perPage;
         $sort = $request->sort;
         $order = $request->order;
@@ -37,8 +37,8 @@ class PagoController extends Controller
             if (array_key_exists('address', $filters)) {
                 $query->whereLike('address', $filters['address']);
             }
-            if (array_key_exists('contribuyente_id', $filters)) {
-                $query->whereContribuyenteId($filters['contribuyente_id']);
+            if (array_key_exists('id', $filters)) {
+                $query->find($filters['id']);
             }
         }
 
@@ -51,5 +51,16 @@ class PagoController extends Controller
         }
 
         return $query->paginate($results);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Taxpayer  $Taxpayer
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return Taxpayer::find($id);
     }
 }

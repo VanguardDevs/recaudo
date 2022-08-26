@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Contribuyente extends Model
+class Taxpayer extends Model
 {
     use HasFactory;
 
     protected $table = 'contribuyente';
 
-    public function pagos()
+    public function payments()
     {
-        return $this->hasMany(Pago::class, 'contribuyente_id');
+        return $this->hasMany(Payment::class, 'contribuyente_id');
     }
 }
