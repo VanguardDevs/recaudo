@@ -5,16 +5,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Grid, useMediaQuery } from '@mui/material'
 import useFetch from '../../hooks/useFetch'
 import Table from '../../components/Table'
-import ButtonLink from '../../components/ButtonLink'
 import ListContainer from '../../components/ListContainer';
-import LinkIconButton from '../../components/LinkIconButton';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import DeleteButton from '../../components/DeleteButton'
-import { useSnackbar } from 'notistack';
-import axios from '../../api'
 import PrintButton from '../../components/DownloadButton';
-import Autocomplete from '@mui/material/Autocomplete';
 import { useAdmin } from '../../context/AdminContext'
 
 const options = [
@@ -39,7 +33,7 @@ const headCells = [
         id: 'item',
         numeric: false,
         disablePadding: true,
-        label: 'Rubro',
+        label: 'RIF',
     },
     {
         id: 'actions',
@@ -62,21 +56,14 @@ const PaymentList = ({ initialValues, createButton, title = 'Relación de pagos'
         filter: filter
     })
     const [items, setItems] = React.useState({})
-    const { enqueueSnackbar } = useSnackbar();
+
     const handleOnChange = (e) => {
         if (e.currentTarget.value) {
-            const value = e.currentTarget.value;
-
-            setFilter(prevState => ({ ...prevState, address: value }))
+            setFilter({
+                global: e.currentTarget.value
+            })
         } else {
-            setFilter(initialValues)
-        }
-    }
-    const onSelectInputChange = (e, newInputValue) => {
-        if (newInputValue) {
-            setFilter(prevState => ({ ...prevState, active: newInputValue.value }))
-        } else {
-            setFilter(initialValues)
+            setFilter({})
         }
     }
 
@@ -123,7 +110,7 @@ const PaymentList = ({ initialValues, createButton, title = 'Relación de pagos'
     React.useEffect(() => setItems(data), [data])
 
     return (
-        <ListContainer title="Cubículos">
+        <ListContainer title="Facturas">
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Box sx={{
                     width: isSmall ? '100%' : '60%',
@@ -142,15 +129,6 @@ const PaymentList = ({ initialValues, createButton, title = 'Relación de pagos'
                                 }}
                                 placeholder='Buscar'
                                 fullWidth
-                            />
-                        </Grid>
-                        <Grid item sm={6}>
-                            <Autocomplete
-                                disablePortal
-                                options={options}
-                                fullWidth
-                                renderInput={(params) => <TextField {...params} label="Estado" />}
-                                onChange={onSelectInputChange}
                             />
                         </Grid>
                     </Grid>

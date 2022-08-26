@@ -22,20 +22,12 @@ class PaymentController extends Controller
         if ($request->has('filter')) {
             $filters = $request->filter;
 
-            if (array_key_exists('rif', $filters)) {
-                $query->whereLike('rif', $filters['rif']);
-            }
-            if (array_key_exists('name', $filters)) {
-                $query->whereLike('name', $filters['name']);
-            }
-            if (array_key_exists('phone', $filters)) {
-                $query->whereLike('phone', $filters['phone']);
-            }
-            if (array_key_exists('email', $filters)) {
-                $query->whereLike('email', $filters['email']);
-            }
-            if (array_key_exists('address', $filters)) {
-                $query->whereLike('address', $filters['address']);
+            if (array_key_exists('global', $filters)) {
+                $query->whereHas('taxpayer', function ($query) use ($filters) {
+                        $query->whereLike('rif', $filters['global'])
+                            ->orWhereLike('razonsocialdenominacioncomercial', $filters['global']);
+                    })
+                    ->orWhereLike('numpago', $filters['global']);
             }
             if (array_key_exists('contribuyente_id', $filters)) {
                 $query->whereContribuyenteId($filters['contribuyente_id']);
